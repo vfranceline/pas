@@ -30,12 +30,12 @@ class AgendaList implements IF_Agenda {
 
     @Override
     public boolean adicionaContato(IF_Contato contato_){
-      if (localizaContato(contato_.getTelefone()) != -1){
-        System.out.println("Duplicidade: O telefone " + contato_.getTelefone() + " já está cadastrado.");
+      int indice = localizaContato(contato_.getTelefone());
+      if (listaContato.get(indice)){
         return false;
       } else {
-        System.out.println("Sucesso: Contato adicionado.");
-        return this.listaContato.add(contato_);
+        this.listaContato.add(contato_);
+        return true;
       }
     }
 
