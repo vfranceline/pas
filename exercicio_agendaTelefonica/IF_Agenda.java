@@ -25,18 +25,24 @@ class AgendaList implements IF_Agenda {
 
     @Override
     public IF_Contato getContato(String telefone){
-      return this.listaContato.get(localizaContato(telefone));
+      int indice = localizaContato(telefone);
+      if (indice < 0) {
+        return null;
+      }
+
+      return this.listaContato.get(indice);
     }
 
     @Override
     public boolean adicionaContato(IF_Contato contato_){
       int indice = localizaContato(contato_.getTelefone());
-      if (listaContato.get(indice)){
+      if (indice >= 0) {
+        // contato já existe
         return false;
-      } else {
-        this.listaContato.add(contato_);
-        return true;
       }
+
+      this.listaContato.add(contato_);
+      return true;
     }
 
     @Override
