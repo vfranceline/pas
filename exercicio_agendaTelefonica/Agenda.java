@@ -37,7 +37,7 @@ public abstract class Agenda {
 
 class AgendaList extends Agenda {
 
-    private ArrayList<IF_Contato> listaAgenda = new ArrayList<>();
+    private List<IF_Contato> listaAgenda = new ArrayList<>();
 
     private int localizaContato(String telefone) {
         for (int index = 0; index < listaAgenda.size(); index++) {
@@ -121,26 +121,12 @@ class AgendaMap extends Agenda {
         return listaContato.values();
     }
 
-    @Override
-    public String toString() {
-        StringBuilder texto = new StringBuilder();
-        Iterator<IF_Contato> valueIterator = this.listaContato.values().iterator();
-
-        while (valueIterator.hasNext()) {
-            IF_Contato value = valueIterator.next();
-            texto.append("Nome: ").append(value.getNome()).append("\n");
-            texto.append("Telefone: ").append(value.getTelefone()).append("\n\n");
-        }
-
-        return texto.toString();
-    }
-
 }
 
 class MainTesteFabrica {
 
     public static void main(String[] args) {
-        Agenda agenda = FabricaAgenda.getInstancia().criaAgenda(FabricaAgenda.AGENDALIST);
+        IF_Agenda agenda = FabricaAgenda.getInstancia().criaAgenda(FabricaAgenda.AGENDALIST);
         IF_Contato[] contatos = new IF_Contato[3];
 
         contatos[0] = new Contato();

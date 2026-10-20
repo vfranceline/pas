@@ -1,0 +1,93 @@
+classDiagram
+    direction TB
+
+    %% ===== DECORATOR (segundo padrão): equipamentos sobre Heroi =====
+    class Heroi {
+        <<interface>>
+        +getNome() String
+        +getClasse() String
+        +getNivel() int
+        +getAtaque() int
+        +getDefesa() int
+    }
+    class HeroiBase {
+        -nome String
+        -classe String
+        -nivel int
+        -ataque int
+        -defesa int
+    }
+    class EquipamentoDecorator {
+        <<abstract>>
+        #heroi Heroi
+        +getAtaque() int
+        +getDefesa() int
+    }
+    class EspadaFlamejante {
+        +getAtaque() int
+    }
+    class EscudoDeCarvalho {
+        +getDefesa() int
+    }
+    class ArmaduraPesada {
+        +getAtaque() int
+        +getDefesa() int
+    }
+
+    Heroi <|.. HeroiBase
+    Heroi <|.. EquipamentoDecorator
+    EquipamentoDecorator o-- Heroi : envolve
+    EquipamentoDecorator <|-- EspadaFlamejante
+    EquipamentoDecorator <|-- EscudoDeCarvalho
+    EquipamentoDecorator <|-- ArmaduraPesada
+
+    %% ===== FILTER (padrão principal): critérios sobre List de Heroi =====
+    class Criterio {
+        <<interface>>
+        +filtrar(herois List~Heroi~) List~Heroi~
+    }
+    class CriterioClasse {
+        -classe String
+    }
+    class CriterioAtaqueMinimo {
+        -minimo int
+    }
+    class CriterioDefesaMinimo {
+        -minimo int
+    }
+    class CriterioE {
+        -a Criterio
+        -b Criterio
+    }
+    class CriterioOu {
+        -a Criterio
+        -b Criterio
+    }
+    class CriterioNao {
+        -criterio Criterio
+    }
+    class CriterioComLog {
+        -criterio Criterio
+        -nome String
+    }
+
+    Criterio <|.. CriterioClasse
+    Criterio <|.. CriterioAtaqueMinimo
+    Criterio <|.. CriterioDefesaMinimo
+    Criterio <|.. CriterioE
+    Criterio <|.. CriterioOu
+    Criterio <|.. CriterioNao
+    Criterio <|.. CriterioComLog
+
+    %% critérios compostos e o decorator de log guardam outros critérios
+    CriterioE o-- Criterio : a, b
+    CriterioOu o-- Criterio : a, b
+    CriterioNao o-- Criterio : criterio
+    CriterioComLog o-- Criterio : envolve
+
+    %% ligação entre os dois padrões: os filtros só enxergam a interface Heroi
+    Criterio ..> Heroi : filtra
+
+    class Main
+    Main ..> Criterio
+    Main ..> Heroi
